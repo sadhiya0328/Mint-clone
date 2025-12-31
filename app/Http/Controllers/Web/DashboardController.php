@@ -5,19 +5,105 @@ namespace App\Http\Controllers\Web;
 use App\Http\Controllers\Controller;
 use App\Models\Account;
 use App\Models\Transaction;
+use App\Models\Bill;
+use App\Models\Budget;
+use App\Models\Goal;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
+use Carbon\Carbon;
 
 class DashboardController extends Controller
 {
-    
-    public function index(){
+    /**
+     * Display the dashboard with comprehensive financial overview
+     */
+    public function index()
+    {
         $userId = Auth::id();
-        //fetches the logged-in user
-        $balance = Account::where('user_id', $userId)->sum('balance');  //add up account balance
-        $income = Transaction::where('amount', '>', 0)->sum('amount'); //feches the transactions the amount is positive
-        $expense = abs(Transaction::where('amount', '<', 0)->sum('amount')); //fetches transactions where amount is negative convert to positive using abs()
 
-        return view('dashboard', compact('balance', 'income', 'expense'));
+        // Account balance - sum of all user accounts
+        $balance = Account::where('user_id', $userId)->sum('balance');
+
+        // Income and Expense calculations (only from user's accounts)
+        // Income: sum of all positive transaction amounts
+        $income = Transaction::whereHas('account', function ($q) use ($userId) {
+            $q->where('user_id', $userId);
+        })->where('amount', '>', 0)->sum('amount');
+
+        // Total Expense: sum of ALL transaction amounts (all transactions are expenses)
+        // Sum all transaction amounts as absolute values since all transactions represent money spent
+        $expense = Transaction::whereHas('account', function ($q) use ($userId) {
+            $q->where('user_id', $userId);
+        })->selectRaw('SUM(ABS(amount)) as total')->value('total') ?? 0;
+
+        // Recent transactions (last 5)
+        $recentTransactions = Transaction::whereHas('account', function ($q) use ($userId) {
+            $q->where('user_id', $userId);
+        })
+        ->with(['account', 'category'])
+        ->latest('date')
+        ->limit(5)
+        ->get();
+
+        // Upcoming bills (all bills, sorted by due date)
+        $upcomingBills = Bill::where('user_id', $userId)
+            ->orderBy('due_date')
+            ->limit(5)
+            ->get()
+            ->map(function ($bill) {
+                $dueDate = Carbon::parse($bill->due_date);
+                $today = Carbon::today();
+                $daysUntilDue = $today->diffInDays($dueDate, false);
+                $isOverdue = $dueDate->isPast();
+                return [
+                    'bill' => $bill,
+                    'days_until_due' => $daysUntilDue,
+                    'is_overdue' => $isOverdue
+                ];
+            });
+
+        // Budget summaries
+        $budgets = Budget::where('user_id', $userId)->with('category')->get();
+        $budgetSummaries = $budgets->map(function ($budget) use ($userId) {
+            // All transactions are expenses, so sum absolute values
+            $spent = Transaction::whereHas('account', function ($q) use ($userId) {
+                    $q->where('user_id', $userId);
+                })
+                ->when($budget->category_id, function ($q) use ($budget) {
+                    $q->where('category_id', $budget->category_id);
+                })
+                ->selectRaw('SUM(ABS(amount)) as total')->value('total') ?? 0;
+
+            return [
+                'budget' => $budget,
+                'spent' => $spent,
+                'percentage' => $budget->amount > 0 ? min(100, ($spent / $budget->amount) * 100) : 0
+            ];
+        })->take(3);
+
+        // Goals summaries
+        $goals = Goal::where('user_id', $userId)
+            ->latest()
+            ->limit(3)
+            ->get()
+            ->map(function ($goal) {
+                $percentage = $goal->target_amount > 0 
+                    ? min(100, ($goal->current_amount / $goal->target_amount) * 100) 
+                    : 0;
+                return [
+                    'goal' => $goal,
+                    'percentage' => $percentage
+                ];
+            });
+
+        return view('dashboard', compact(
+            'balance', 
+            'income', 
+            'expense',
+            'recentTransactions',
+            'upcomingBills',
+            'budgetSummaries',
+            'goals'
+        ));
     }
 }
