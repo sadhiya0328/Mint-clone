@@ -21,5 +21,7 @@ class DatabaseSeeder extends Seeder
             'name' => 'Test User',
             'email' => 'test@example.com',
         ]);
+        //seed default categories
+        // $this->call(CategorySeeder::class);
     }
 }

@@ -13,7 +13,7 @@ return new class extends Migration
     {
         //purpose:store bank/ credit accounts
         Schema::create('accounts', function (Blueprint $table) {
-             $table->id();
+        $table->id();
         $table->foreignId('user_id')->constrained()->cascadeOnDelete();
         $table->string('plaid_item_id')->nullable();
         $table->string('name');
