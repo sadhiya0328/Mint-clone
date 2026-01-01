@@ -39,7 +39,7 @@
         display: flex;
         align-items: center;
         justify-content: center;
-        padding: 20px;
+        padding: 40px;
         animation: fadeIn 0.4s ease-out;
     }
 
@@ -78,14 +78,16 @@
 
     /* Left Panel - Visual */
     .left-panel {
-        width: 42%;
-        background: linear-gradient(135deg, #1e4d1e 0%, #2d5a2d 50%, #1e4d1e 100%),
-                    url('https://images.unsplash.com/photo-1530836369250-ef72a3f5cda8?w=800&auto=format&fit=crop') center/cover;
-        background-blend-mode: overlay;
+        width: 35%;
+        background-color: #d4f4dd;
+        background-image: url('https://i.ibb.co/cSrBbMRC/logincc.jpg');
+        background-position: center;
+        background-size: contain;
+        background-repeat: no-repeat;
         position: relative;
         display: flex;
         align-items: flex-start;
-        padding: 30px;
+        padding: 50px;
         transition: all 0.6s cubic-bezier(0.4, 0, 0.2, 1);
     }
 
@@ -118,7 +120,7 @@
     .right-panel {
         width: 58%;
         background: #000000;
-        padding: 60px 50px;
+        padding: 80px 70px;
         display: flex;
         flex-direction: column;
         justify-content: center;

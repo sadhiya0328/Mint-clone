@@ -10,7 +10,7 @@ use App\Http\Controllers\Web\BillController;
 use App\Http\Controllers\Web\GoalController;
 
 Route::get('/', function () {
-    return view('welcome');
+    return redirect('/register');
 });
 Route::middleware('guest')->group(function () {
     Route::get('/register', [AuthController::class, 'showRegister']);
@@ -23,6 +23,7 @@ Route::middleware('guest')->group(function () {
 Route::get('/logout', [AuthController::class, 'logout']);
 
 Route::get('/dashboard', [DashboardController::class, 'index'])->middleware('auth');
+Route::get('/dashboard/search', [DashboardController::class, 'search'])->middleware('auth');
 Route::get('/accounts', [AccountController::class, 'index'])->middleware('auth');
 Route::post('/accounts', [AccountController::class, 'store'])->middleware('auth');
 
