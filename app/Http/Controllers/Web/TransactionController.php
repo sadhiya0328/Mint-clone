@@ -49,7 +49,8 @@ class TransactionController extends Controller
         $request->validate([
             'account_id' => 'required|exists:accounts,id',
             'description' => 'required|string',
-            'amount' => 'required|numeric',
+            'type' => 'required|in:income,expense',
+            'amount' => 'required|numeric|min:0.01',
             'date' => 'required|date',
             'category_id' => 'nullable|exists:categories,id'
         ]);
@@ -61,17 +62,25 @@ class TransactionController extends Controller
                           ->where('user_id', $userId)
                           ->firstOrFail();
 
+        // Convert amount: expenses are negative, income is positive
+        $amount = $request->amount;
+        if ($request->type === 'expense') {
+            $amount = -abs($amount); // Ensure expense is negative
+        } else {
+            $amount = abs($amount); // Ensure income is positive
+        }
+
         // Create transaction
         $transaction = Transaction::create([
             'account_id' => $account->id,
             'category_id' => $request->category_id,
             'description' => $request->description,
-            'amount' => $request->amount,
+            'amount' => $amount,
             'date' => $request->date
         ]);
 
         // Update account balance
-        $account->balance += $request->amount;
+        $account->balance += $amount;
         $account->save();
 
         return redirect('/transactions')->with('success', 'Transaction added successfully');

@@ -13,14 +13,14 @@
     }
 
     .page-header h2 {
-        font-size: 24px;
+        font-size: 28px;
         font-weight: 700;
-        color: #111827;
+        color: #ffffff;
     }
 
     .btn-primary {
         padding: 12px 24px;
-        background: #0f766e;
+        background: #10b981;
         color: white;
         border: none;
         border-radius: 10px;
@@ -34,9 +34,9 @@
     }
 
     .btn-primary:hover {
-        background: #115e59;
+        background: #34d399;
         transform: translateY(-1px);
-        box-shadow: 0 4px 12px rgba(15, 118, 110, 0.3);
+        box-shadow: 0 4px 12px rgba(16, 185, 129, 0.4);
     }
 
     .goals-grid {
@@ -46,12 +46,18 @@
     }
 
     .goal-card {
-        background: rgba(255, 255, 255, 0.7);
+        background: rgba(255, 255, 255, 0.05);
         backdrop-filter: blur(20px);
         padding: 24px;
         border-radius: 16px;
-        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
-        border: 1px solid rgba(255, 255, 255, 0.3);
+        box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+        border: 1px solid rgba(255, 255, 255, 0.1);
+        transition: all 0.3s;
+    }
+
+    .goal-card:hover {
+        border-color: rgba(16, 185, 129, 0.3);
+        box-shadow: 0 12px 40px rgba(16, 185, 129, 0.15);
     }
 
     .goal-header {
@@ -61,7 +67,7 @@
     .goal-title {
         font-size: 20px;
         font-weight: 600;
-        color: #111827;
+        color: #ffffff;
         margin-bottom: 8px;
     }
 
@@ -75,12 +81,12 @@
     .goal-current {
         font-size: 28px;
         font-weight: 700;
-        color: #0f766e;
+        color: #10b981;
     }
 
     .goal-target {
         font-size: 16px;
-        color: #6b7280;
+        color: #9ca3af;
     }
 
     .progress-container {
@@ -89,25 +95,25 @@
 
     .progress-bar-wrapper {
         width: 100%;
-        height: 16px;
-        background: rgba(15, 118, 110, 0.1);
-        border-radius: 8px;
+        height: 12px;
+        background: rgba(255, 255, 255, 0.1);
+        border-radius: 6px;
         overflow: hidden;
         position: relative;
     }
 
     .progress-bar {
         height: 100%;
-        background: linear-gradient(90deg, #0f766e 0%, #14b8a6 100%);
-        border-radius: 8px;
+        background: linear-gradient(90deg, #10b981 0%, #34d399 100%);
+        border-radius: 6px;
         transition: width 0.3s ease;
     }
 
     .progress-percentage {
         text-align: center;
-        font-size: 14px;
+        font-size: 13px;
         font-weight: 600;
-        color: #0f766e;
+        color: #9ca3af;
         margin-top: 8px;
     }
 
@@ -115,7 +121,7 @@
         display: flex;
         justify-content: space-between;
         padding-top: 20px;
-        border-top: 1px solid rgba(15, 118, 110, 0.1);
+        border-top: 1px solid rgba(255, 255, 255, 0.1);
     }
 
     .stat-item {
@@ -124,24 +130,24 @@
 
     .stat-label {
         font-size: 12px;
-        color: #6b7280;
+        color: #9ca3af;
         margin-bottom: 4px;
     }
 
     .stat-value {
         font-size: 16px;
         font-weight: 600;
-        color: #111827;
+        color: #ffffff;
     }
 
     .stat-value.remaining {
-        color: #16a34a;
+        color: #10b981;
     }
 
     .update-form {
         margin-top: 20px;
         padding-top: 20px;
-        border-top: 1px solid rgba(15, 118, 110, 0.1);
+        border-top: 1px solid rgba(255, 255, 255, 0.1);
     }
 
     .update-form form {
@@ -160,35 +166,125 @@
 
     .alert-success {
         padding: 12px 20px;
-        background: rgba(22, 163, 74, 0.1);
-        color: #16a34a;
+        background: rgba(16, 185, 129, 0.15);
+        color: #10b981;
         border-radius: 10px;
         margin-bottom: 24px;
-        border-left: 4px solid #16a34a;
+        border-left: 4px solid #10b981;
     }
 
     .no-data {
         text-align: center;
         padding: 60px 20px;
-        color: #6b7280;
+        color: #9ca3af;
         grid-column: 1 / -1;
+    }
+
+    .no-data h3 {
+        color: #ffffff;
+        margin: 16px 0 8px;
     }
 
     .no-data i {
         font-size: 48px;
         margin-bottom: 16px;
-        color: #9ca3af;
+        color: #6b7280;
     }
 
     .completed-badge {
         display: inline-block;
         padding: 4px 12px;
-        background: rgba(22, 163, 74, 0.1);
-        color: #16a34a;
+        background: rgba(16, 185, 129, 0.2);
+        color: #10b981;
         border-radius: 6px;
         font-size: 12px;
         font-weight: 600;
         margin-bottom: 12px;
+        border: 1px solid rgba(16, 185, 129, 0.3);
+    }
+
+    /* Responsive */
+    @media (max-width: 768px) {
+        .page-header {
+            flex-direction: column;
+            align-items: flex-start;
+            gap: 16px;
+        }
+
+        .page-header h2 {
+            font-size: 24px;
+        }
+
+        .btn-primary {
+            width: 100%;
+            justify-content: center;
+        }
+
+        .goals-grid {
+            grid-template-columns: 1fr;
+            gap: 16px;
+        }
+
+        .goal-card {
+            padding: 20px;
+        }
+
+        .goal-title {
+            font-size: 18px;
+        }
+
+        .goal-current {
+            font-size: 24px;
+        }
+
+        .goal-amounts {
+            flex-direction: column;
+            align-items: flex-start;
+            gap: 8px;
+        }
+
+        .goal-stats {
+            flex-direction: column;
+            gap: 16px;
+        }
+
+        .stat-item {
+            text-align: left;
+        }
+
+        .update-form form {
+            flex-direction: column;
+        }
+
+        .update-form button {
+            width: 100%;
+        }
+    }
+
+    @media (max-width: 480px) {
+        .page-header h2 {
+            font-size: 20px;
+        }
+
+        .goal-card {
+            padding: 16px;
+        }
+
+        .goal-title {
+            font-size: 16px;
+        }
+
+        .goal-current {
+            font-size: 20px;
+        }
+
+        .goal-target {
+            font-size: 14px;
+        }
+
+        .stat-value {
+            font-size: 14px;
+        }
     }
 </style>
 

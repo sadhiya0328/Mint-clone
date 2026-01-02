@@ -20,6 +20,10 @@ class DashboardController extends Controller
      */
     public function index()
     {
+        if (!Auth::check()) {
+            return view('auth.please-login');
+        }
+
         $userId = Auth::id();
 
         // Account balance - sum of all user accounts

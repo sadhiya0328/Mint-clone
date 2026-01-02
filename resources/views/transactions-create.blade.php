@@ -10,9 +10,9 @@
     }
 
     .page-header h2 {
-        font-size: 24px;
+        font-size: 28px;
         font-weight: 700;
-        color: #111827;
+        color: #ffffff;
     }
 
     .form-card {
@@ -27,7 +27,7 @@
         display: block;
         margin-bottom: 8px;
         font-weight: 600;
-        color: #111827;
+        color: #e5e7eb;
         font-size: 14px;
     }
 
@@ -35,6 +35,37 @@
         display: flex;
         gap: 12px;
         margin-top: 32px;
+    }
+
+    /* Responsive */
+    @media (max-width: 768px) {
+        .page-header h2 {
+            font-size: 24px;
+        }
+
+        .form-card {
+            max-width: 100%;
+        }
+
+        .btn-group {
+            flex-direction: column;
+        }
+
+        .btn-group button,
+        .btn-group a {
+            width: 100%;
+            justify-content: center;
+        }
+    }
+
+    @media (max-width: 480px) {
+        .page-header h2 {
+            font-size: 20px;
+        }
+
+        .form-group label {
+            font-size: 13px;
+        }
     }
 </style>
 
@@ -70,10 +101,21 @@
         </div>
 
         <div class="form-group">
+            <label for="type">Transaction Type *</label>
+            <select name="type" id="type" required>
+                <option value="expense" {{ old('type') == 'expense' ? 'selected' : '' }}>Expense</option>
+                <option value="income" {{ old('type') == 'income' ? 'selected' : '' }}>Income</option>
+            </select>
+            @error('type')
+                <span style="color: #dc2626; font-size: 12px; margin-top: 4px; display: block;">{{ $message }}</span>
+            @enderror
+        </div>
+
+        <div class="form-group">
             <label for="amount">Amount *</label>
-            <input type="number" step="0.01" name="amount" id="amount" value="{{ old('amount') }}" required placeholder="Enter amount (positive for income, negative for expense)">
+            <input type="number" step="0.01" name="amount" id="amount" value="{{ old('amount') }}" required placeholder="Enter amount" min="0.01">
             <small style="color: #6b7280; font-size: 12px; margin-top: 4px; display: block;">
-                Use positive numbers for income, negative for expenses
+                Enter the amount (always use positive numbers)
             </small>
             @error('amount')
                 <span style="color: #dc2626; font-size: 12px; margin-top: 4px; display: block;">{{ $message }}</span>

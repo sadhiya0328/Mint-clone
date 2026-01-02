@@ -25,6 +25,7 @@ class TransactionController extends Controller
         $request->validate([
             'account_id' => 'required|exists:accounts,id',
             'description' => 'required|string',
+            'type' => 'nullable|in:income,expense',
             'amount' => 'required|numeric',
             'date' => 'required|date',
             'category_id' => 'nullable'
@@ -35,17 +36,29 @@ class TransactionController extends Controller
                           ->where('user_id', Auth::id())
                           ->firstOrFail();
 
+        // Handle amount conversion based on type
+        // If type is provided, use it; otherwise, infer from amount sign (backward compatibility)
+        $amount = $request->amount;
+        if ($request->has('type')) {
+            if ($request->type === 'expense') {
+                $amount = -abs($amount); // Ensure expense is negative
+            } else {
+                $amount = abs($amount); // Ensure income is positive
+            }
+        }
+        // If type not provided, use amount as-is (backward compatibility for existing API calls)
+
         // Create transaction
         $transaction = Transaction::create([
             'account_id' => $account->id,
             'category_id' => $request->category_id, // can be null
             'description' => $request->description,
-            'amount' => $request->amount,
+            'amount' => $amount,
             'date' => $request->date
         ]);
 
         // Update account balance
-        $account->balance += $request->amount;
+        $account->balance += $amount;
         $account->save();
 
         return response()->json([

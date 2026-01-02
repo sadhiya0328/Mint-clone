@@ -24,20 +24,20 @@ class BudgetController extends Controller
 
         // Calculate spent amounts for each budget
         $budgetsWithSpent = $budgets->map(function ($budget) use ($userId) {
+            // All transactions are expenses, so sum absolute values (same logic as DashboardController)
             $spent = Transaction::whereHas('account', function ($q) use ($userId) {
                     $q->where('user_id', $userId);
                 })
-                ->where('amount', '<', 0) // Only expenses
                 ->when($budget->category_id, function ($q) use ($budget) {
                     $q->where('category_id', $budget->category_id);
                 })
-                ->sum('amount');
+                ->selectRaw('SUM(ABS(amount)) as total')->value('total') ?? 0;
 
             return [
                 'budget' => $budget,
-                'spent' => abs($spent),
-                'remaining' => $budget->amount - abs($spent),
-                'percentage' => $budget->amount > 0 ? min(100, (abs($spent) / $budget->amount) * 100) : 0
+                'spent' => $spent,
+                'remaining' => $budget->amount - $spent,
+                'percentage' => $budget->amount > 0 ? min(100, ($spent / $budget->amount) * 100) : 0
             ];
         });
 

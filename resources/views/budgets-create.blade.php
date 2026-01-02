@@ -10,9 +10,9 @@
     }
 
     .page-header h2 {
-        font-size: 24px;
+        font-size: 28px;
         font-weight: 700;
-        color: #111827;
+        color: #ffffff;
     }
 
     .form-card {
@@ -27,7 +27,7 @@
         display: block;
         margin-bottom: 8px;
         font-weight: 600;
-        color: #111827;
+        color: #e5e7eb;
         font-size: 14px;
     }
 
@@ -39,12 +39,48 @@
 
     .info-box {
         padding: 16px;
-        background: rgba(15, 118, 110, 0.1);
+        background: rgba(16, 185, 129, 0.15);
         border-radius: 10px;
-        border-left: 4px solid #0f766e;
+        border-left: 4px solid #10b981;
         margin-bottom: 24px;
-        color: #0f766e;
+        color: #10b981;
         font-size: 14px;
+    }
+
+    /* Responsive */
+    @media (max-width: 768px) {
+        .page-header h2 {
+            font-size: 24px;
+        }
+
+        .form-card {
+            max-width: 100%;
+        }
+
+        .btn-group {
+            flex-direction: column;
+        }
+
+        .btn-group button,
+        .btn-group a {
+            width: 100%;
+            justify-content: center;
+        }
+    }
+
+    @media (max-width: 480px) {
+        .page-header h2 {
+            font-size: 20px;
+        }
+
+        .form-group label {
+            font-size: 13px;
+        }
+
+        .info-box {
+            padding: 12px;
+            font-size: 13px;
+        }
     }
 </style>
 
