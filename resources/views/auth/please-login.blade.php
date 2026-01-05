@@ -54,7 +54,7 @@
         transform: translateX(-50%);
         width: 600px;
         height: 600px;
-        background: linear-gradient(135deg, #10b981 0%, #34d399 100%);
+        background: linear-gradient(135deg, #00CED1 0%, #40EBEE 100%);
         border-radius: 50%;
         opacity: 0.1;
         z-index: 0;
@@ -97,7 +97,7 @@
 
     .auth-link {
         padding: 12px 32px;
-        background: #10b981;
+        background: #00CED1;
         color: white;
         text-decoration: none;
         border-radius: 10px;
@@ -108,9 +108,9 @@
     }
 
     .auth-link:hover {
-        background: #34d399;
+        background: #40EBEE;
         transform: translateY(-1px);
-        box-shadow: 0 4px 12px rgba(16, 185, 129, 0.4);
+        box-shadow: 0 4px 12px rgba(0, 206, 209, 0.4);
     }
 
     .auth-link.secondary {

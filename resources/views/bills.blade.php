@@ -20,7 +20,7 @@
 
     .btn-primary {
         padding: 12px 24px;
-        background: #10b981;
+        background: #00CED1;
         color: white;
         border: none;
         border-radius: 10px;
@@ -34,9 +34,9 @@
     }
 
     .btn-primary:hover {
-        background: #34d399;
+        background: #40EBEE;
         transform: translateY(-1px);
-        box-shadow: 0 4px 12px rgba(16, 185, 129, 0.4);
+        box-shadow: 0 4px 12px rgba(0, 206, 209, 0.4);
     }
 
     .bills-list {
@@ -61,7 +61,7 @@
     .bill-card:hover {
         transform: translateY(-2px);
         box-shadow: 0 12px 40px rgba(0, 0, 0, 0.4);
-        border-color: rgba(16, 185, 129, 0.3);
+        border-color: rgba(0, 206, 209, 0.3);
     }
 
     .bill-card.overdue {
@@ -75,7 +75,7 @@
     }
 
     .bill-card.upcoming {
-        border-left: 4px solid #10b981;
+        border-left: 4px solid #00CED1;
     }
 
     .bill-info {
@@ -100,7 +100,7 @@
     .bill-amount {
         font-size: 24px;
         font-weight: 700;
-        color: #10b981;
+        color: #00CED1;
         margin-right: 24px;
     }
 
@@ -126,18 +126,18 @@
     }
 
     .status-upcoming {
-        background: rgba(16, 185, 129, 0.2);
-        color: #10b981;
-        border: 1px solid rgba(16, 185, 129, 0.3);
+        background: rgba(0, 206, 209, 0.2);
+        color: #00CED1;
+        border: 1px solid rgba(0, 206, 209, 0.3);
     }
 
     .alert-success {
         padding: 12px 20px;
-        background: rgba(16, 185, 129, 0.15);
-        color: #10b981;
+        background: rgba(0, 206, 209, 0.15);
+        color: #00CED1;
         border-radius: 10px;
         margin-bottom: 24px;
-        border-left: 4px solid #10b981;
+        border-left: 4px solid #00CED1;
     }
 
     .no-data {

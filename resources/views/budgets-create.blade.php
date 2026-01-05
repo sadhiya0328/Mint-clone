@@ -39,11 +39,11 @@
 
     .info-box {
         padding: 16px;
-        background: rgba(16, 185, 129, 0.15);
+        background: rgba(0, 206, 209, 0.15);
         border-radius: 10px;
-        border-left: 4px solid #10b981;
+        border-left: 4px solid #00CED1;
         margin-bottom: 24px;
-        color: #10b981;
+        color: #00CED1;
         font-size: 14px;
     }
 

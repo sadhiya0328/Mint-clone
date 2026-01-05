@@ -20,7 +20,7 @@
 
     .btn-primary {
         padding: 12px 24px;
-        background: #10b981;
+        background: #00CED1;
         color: white;
         border: none;
         border-radius: 10px;
@@ -34,9 +34,9 @@
     }
 
     .btn-primary:hover {
-        background: #34d399;
+        background: #40EBEE;
         transform: translateY(-1px);
-        box-shadow: 0 4px 12px rgba(16, 185, 129, 0.4);
+        box-shadow: 0 4px 12px rgba(0, 206, 209, 0.4);
     }
 
     .goals-grid {
@@ -56,8 +56,8 @@
     }
 
     .goal-card:hover {
-        border-color: rgba(16, 185, 129, 0.3);
-        box-shadow: 0 12px 40px rgba(16, 185, 129, 0.15);
+        border-color: rgba(0, 206, 209, 0.3);
+        box-shadow: 0 12px 40px rgba(0, 206, 209, 0.15);
     }
 
     .goal-header {
@@ -81,7 +81,7 @@
     .goal-current {
         font-size: 28px;
         font-weight: 700;
-        color: #10b981;
+        color: #00CED1;
     }
 
     .goal-target {
@@ -104,7 +104,7 @@
 
     .progress-bar {
         height: 100%;
-        background: linear-gradient(90deg, #10b981 0%, #34d399 100%);
+        background: linear-gradient(90deg, #00CED1 0%, #40EBEE 100%);
         border-radius: 6px;
         transition: width 0.3s ease;
     }
@@ -141,7 +141,7 @@
     }
 
     .stat-value.remaining {
-        color: #10b981;
+        color: #00CED1;
     }
 
     .update-form {
@@ -166,11 +166,11 @@
 
     .alert-success {
         padding: 12px 20px;
-        background: rgba(16, 185, 129, 0.15);
-        color: #10b981;
+        background: rgba(0, 206, 209, 0.15);
+        color: #00CED1;
         border-radius: 10px;
         margin-bottom: 24px;
-        border-left: 4px solid #10b981;
+        border-left: 4px solid #00CED1;
     }
 
     .no-data {
@@ -194,13 +194,13 @@
     .completed-badge {
         display: inline-block;
         padding: 4px 12px;
-        background: rgba(16, 185, 129, 0.2);
-        color: #10b981;
+        background: rgba(0, 206, 209, 0.2);
+        color: #00CED1;
         border-radius: 6px;
         font-size: 12px;
         font-weight: 600;
         margin-bottom: 12px;
-        border: 1px solid rgba(16, 185, 129, 0.3);
+        border: 1px solid rgba(0, 206, 209, 0.3);
     }
 
     /* Responsive */

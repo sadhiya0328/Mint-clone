@@ -53,7 +53,7 @@
         left: -10%;
         width: 600px;
         height: 600px;
-        background: linear-gradient(135deg, #10b981 0%, #34d399 100%);
+        background: linear-gradient(135deg, #00CED1 0%, #40EBEE 100%);
         border-radius: 50%;
         opacity: 0.1;
         z-index: 0;
@@ -126,12 +126,12 @@
         background: rgba(255, 255, 255, 0.05);
         color: #e5e7eb;
         position: relative;
-        border-left: 3px solid #10b981;
+        border-left: 3px solid #00CED1;
     }
 
     .form-input:focus {
-        border-color: #10b981;
-        box-shadow: 0 0 0 3px rgba(16, 185, 129, 0.2);
+        border-color: #00CED1;
+        box-shadow: 0 0 0 3px rgba(0, 206, 209, 0.2);
         background: rgba(255, 255, 255, 0.08);
     }
 
@@ -156,7 +156,7 @@
         padding: 14px;
         border: none;
         border-radius: 8px;
-        background: #10b981;
+        background: #00CED1;
         color: #FFFFFF;
         font-size: 16px;
         font-weight: 600;
@@ -171,9 +171,9 @@
     }
 
     .submit-button:hover {
-        background: #34d399;
+        background: #40EBEE;
         transform: translateY(-1px);
-        box-shadow: 0 4px 12px rgba(16, 185, 129, 0.4);
+        box-shadow: 0 4px 12px rgba(0, 206, 209, 0.4);
     }
 
     .submit-button i {
@@ -183,7 +183,7 @@
     /* Right Panel - Welcome (Green Gradient) */
     .welcome-panel {
         width: 50%;
-        background: linear-gradient(135deg, #10b981 0%, #34d399 100%);
+        background: linear-gradient(135deg, #00CED1 0%, #40EBEE 100%);
         padding: 60px 50px;
         display: flex;
         flex-direction: column;

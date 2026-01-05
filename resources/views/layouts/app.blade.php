@@ -62,7 +62,7 @@
         .brand span {
             font-size: 24px;
             font-weight: 700;
-            background: linear-gradient(135deg, #10b981 0%, #34d399 100%);
+            background: linear-gradient(135deg, #00CED1 0%, #40EBEE 100%);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
             background-clip: text;
@@ -319,8 +319,8 @@
 
         input:focus, select:focus, textarea:focus {
             outline: none;
-            border-color: #10b981;
-            box-shadow: 0 0 0 3px rgba(16, 185, 129, 0.2);
+            border-color: #00CED1;
+            box-shadow: 0 0 0 3px rgba(0, 206, 209, 0.2);
             background: rgba(255, 255, 255, 0.08);
         }
 
@@ -330,7 +330,7 @@
 
         button, .btn {
             padding: 12px 24px;
-            background: #10b981;
+            background: #00CED1;
             color: white;
             border: none;
             border-radius: 10px;
@@ -342,9 +342,9 @@
         }
 
         button:hover, .btn:hover {
-            background: #34d399;
+            background: #40EBEE;
             transform: translateY(-1px);
-            box-shadow: 0 4px 12px rgba(16, 185, 129, 0.4);
+            box-shadow: 0 4px 12px rgba(0, 206, 209, 0.4);
         }
 
         button.secondary {
@@ -517,7 +517,7 @@
         .search-result-item-amount {
             font-size: 16px;
             font-weight: 700;
-            color: #10b981;
+            color: #00CED1;
             margin-top: 8px;
         }
 

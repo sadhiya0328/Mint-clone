@@ -78,7 +78,7 @@
     }
 
     .icon-remaining {
-        background: linear-gradient(135deg, #10b981 0%, #34d399 100%);
+        background: linear-gradient(135deg, #00CED1 0%, #40EBEE 100%);
     }
 
     .stat-card-value {
@@ -94,7 +94,7 @@
     }
 
     .stat-card-value.remaining {
-        color: #10b981;
+        color: #00CED1;
     }
 
     .stat-card-value.remaining.negative {
@@ -257,9 +257,9 @@
     }
 
     .transaction-icon.positive {
-        background: rgba(16, 185, 129, 0.2);
-        color: #10b981;
-        border: 1px solid rgba(16, 185, 129, 0.3);
+        background: rgba(0, 206, 209, 0.2);
+        color: #00CED1;
+        border: 1px solid rgba(0, 206, 209, 0.3);
     }
 
     .transaction-icon.negative {
@@ -295,7 +295,7 @@
     }
 
     .transaction-amount.positive {
-        color: #10b981;
+        color: #00CED1;
     }
 
     .transaction-amount.negative {
@@ -351,7 +351,7 @@
 
     .progress-bar-fill {
         height: 100%;
-        background: linear-gradient(90deg, #10b981 0%, #34d399 50%, #a855f7 100%);
+        background: linear-gradient(90deg, #00CED1 0%, #40EBEE 50%, #a855f7 100%);
         border-radius: 8px;
         transition: width 0.5s ease;
         box-shadow: 0 0 10px rgba(168, 85, 247, 0.4);
@@ -374,7 +374,7 @@
 
     .goal-item:hover {
         background: rgba(255, 255, 255, 0.05);
-        border-color: rgba(16, 185, 129, 0.2);
+        border-color: rgba(0, 206, 209, 0.2);
     }
 
     .goal-item:last-child {
@@ -590,10 +590,13 @@
             </div>
         </div>
         @php
-            // Remaining = Total Balance - Total Expense
             $remaining = $balance - $expense;
         @endphp
-        <p class="stat-card-value remaining {{ $remaining < 0 ? 'negative' : '' }}">₹{{ number_format($remaining, 2) }}</p>
+        @if($remaining < 0)
+            <p class="stat-card-value remaining negative">₹{{ number_format($remaining, 2) }}</p>
+        @else
+            <p class="stat-card-value remaining">₹{{ number_format($remaining, 2) }}</p>
+        @endif
     </div>
 </div>
 
@@ -615,7 +618,7 @@
             @foreach($upcomingBills as $billData)
                 @php 
                     $bill = $billData['bill'];
-                    $isOverdue = $billData['is_overdue'] ?? false;
+                    $isOverdue = $billData['is_overdue'];
                     $daysUntilDue = $billData['days_until_due'];
                 @endphp
                 <div class="bill-item">
@@ -628,12 +631,20 @@
                                 @if($isOverdue)
                                     • Was due {{ abs($daysUntilDue) }} day(s) ago
                                 @else
-                                    • {{ $daysUntilDue == 0 ? 'Due today' : ($daysUntilDue . ' day(s) left') }}
+                                    @if($daysUntilDue == 0)
+                                        • Due today
+                                    @else
+                                        • {{ $daysUntilDue }} day(s) left
+                                    @endif
                                 @endif
                             </span>
                         </div>
                     </div>
-                    <div class="bill-amount {{ $isOverdue ? 'overdue' : '' }}">₹{{ number_format($bill->amount, 2) }}</div>
+                    @if($isOverdue)
+                        <div class="bill-amount overdue">₹{{ number_format($bill->amount, 2) }}</div>
+                    @else
+                        <div class="bill-amount">₹{{ number_format($bill->amount, 2) }}</div>
+                    @endif
                 </div>
             @endforeach
         @else
@@ -658,10 +669,19 @@
         </div>
         @if($recentTransactions->count() > 0)
             @foreach($recentTransactions as $transaction)
+                @php
+                    $isPositive = $transaction->amount >= 0;
+                @endphp
                 <div class="transaction-item">
-                    <div class="transaction-icon {{ $transaction->amount >= 0 ? 'positive' : 'negative' }}">
-                        <i class="fas {{ $transaction->amount >= 0 ? 'fa-arrow-up' : 'fa-arrow-down' }}"></i>
-                    </div>
+                    @if($isPositive)
+                        <div class="transaction-icon positive">
+                            <i class="fas fa-arrow-up"></i>
+                        </div>
+                    @else
+                        <div class="transaction-icon negative">
+                            <i class="fas fa-arrow-down"></i>
+                        </div>
+                    @endif
                     <div class="transaction-info">
                         <div class="transaction-description">{{ $transaction->description }}</div>
                         <div class="transaction-meta">
@@ -671,9 +691,15 @@
                             @endif
                         </div>
                     </div>
-                    <div class="transaction-amount {{ $transaction->amount >= 0 ? 'positive' : 'negative' }}">
-                        {{ $transaction->amount >= 0 ? '+' : '-' }}₹{{ number_format(abs($transaction->amount), 2) }}
-                    </div>
+                    @if($isPositive)
+                        <div class="transaction-amount positive">
+                            +₹{{ number_format($transaction->amount, 2) }}
+                        </div>
+                    @else
+                        <div class="transaction-amount negative">
+                            -₹{{ number_format(abs($transaction->amount), 2) }}
+                        </div>
+                    @endif
                 </div>
             @endforeach
         @else
@@ -702,16 +728,25 @@
                     $budget = $budgetData['budget'];
                     $percentage = $budgetData['percentage'];
                     $isOver = $percentage > 100;
+                    $progressWidth = min(100, $percentage);
                 @endphp
                 <div class="budget-item">
                     <div class="budget-header-small">
                         <span class="budget-name-small">
-                            {{ $budget->category ? $budget->category->name : 'All Categories' }}
+                            @if($budget->category)
+                                {{ $budget->category->name }}
+                            @else
+                                All Categories
+                            @endif
                         </span>
                         <span class="budget-percentage">{{ number_format($percentage, 1) }}%</span>
                     </div>
                     <div class="progress-bar-small">
-                        <div class="progress-bar-fill {{ $isOver ? 'over' : '' }}" style="width: {{ min(100, $percentage) }}%"></div>
+                        @if($isOver)
+                            <div class="progress-bar-fill over" style="width: {{ $progressWidth }}%"></div>
+                        @else
+                            <div class="progress-bar-fill" style="width: {{ $progressWidth }}%"></div>
+                        @endif
                     </div>
                 </div>
             @endforeach
@@ -735,6 +770,7 @@
                 @php
                     $goal = $goalData['goal'];
                     $percentage = $goalData['percentage'];
+                    $progressWidth = min(100, $percentage);
                 @endphp
                 <div class="goal-item">
                     <div class="goal-header-small">
@@ -744,7 +780,7 @@
                         </span>
                     </div>
                     <div class="progress-bar-small">
-                        <div class="progress-bar-fill" style="width: {{ min(100, $percentage) }}%"></div>
+                        <div class="progress-bar-fill" style="width: {{ $progressWidth }}%"></div>
                     </div>
                 </div>
             @endforeach
