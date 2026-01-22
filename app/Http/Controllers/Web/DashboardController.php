@@ -30,15 +30,22 @@ class DashboardController extends Controller
         $balance = Account::where('user_id', $userId)->sum('balance');
 
         // Income and Expense calculations (only from user's accounts)
-        // Income: sum of all positive transaction amounts
+        // Income: sum of all transactions with "Income" category
         $income = Transaction::whereHas('account', function ($q) use ($userId) {
             $q->where('user_id', $userId);
-        })->where('amount', '>', 0)->sum('amount');
+        })->whereHas('category', function ($q) {
+            $q->where('name', 'Income');
+        })->sum('amount');
 
-        // Total Expense: sum of ALL transaction amounts (all transactions are expenses)
-        // Sum all transaction amounts as absolute values since all transactions represent money spent
+        // Total Expense: sum of all transactions that are NOT "Income" category
+        // These are actual expenses (Food, Entertainment, Shopping, etc.)
         $expense = Transaction::whereHas('account', function ($q) use ($userId) {
             $q->where('user_id', $userId);
+        })->where(function ($q) {
+            $q->whereNull('category_id')
+              ->orWhereHas('category', function ($catQ) {
+                  $catQ->where('name', '!=', 'Income');
+              });
         })->selectRaw('SUM(ABS(amount)) as total')->value('total') ?? 0;
 
         // Recent transactions (last 5)
@@ -70,12 +77,18 @@ class DashboardController extends Controller
         // Budget summaries
         $budgets = Budget::where('user_id', $userId)->with('category')->get();
         $budgetSummaries = $budgets->map(function ($budget) use ($userId) {
-            // All transactions are expenses, so sum absolute values
+            // Only count expenses (exclude Income category) for budget tracking
             $spent = Transaction::whereHas('account', function ($q) use ($userId) {
                     $q->where('user_id', $userId);
                 })
                 ->when($budget->category_id, function ($q) use ($budget) {
                     $q->where('category_id', $budget->category_id);
+                })
+                ->where(function ($q) {
+                    $q->whereNull('category_id')
+                      ->orWhereHas('category', function ($catQ) {
+                          $catQ->where('name', '!=', 'Income');
+                      });
                 })
                 ->selectRaw('SUM(ABS(amount)) as total')->value('total') ?? 0;
 

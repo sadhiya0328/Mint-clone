@@ -12,9 +12,9 @@ class TransactionController extends Controller
     // Get all transactions of logged-in user
     public function index()
     {
-        $transactions = Transaction::whereHas('account', function ($query) {
-            $query->where('user_id', Auth::id());
-        })->latest()->get();
+        $transactions = Transaction::whereHas('account', function ($query) {//whereHas is a relationship that allows the transaction to belong to an account
+            $query->where('user_id', Auth::id()); //gets all the transactions of the logged in user
+        })->latest()->get();//->access the latest transactions
 
         return response()->json($transactions);
     }
@@ -28,13 +28,13 @@ class TransactionController extends Controller
             'type' => 'nullable|in:income,expense',
             'amount' => 'required|numeric',
             'date' => 'required|date',
-            'category_id' => 'nullable'
+            'category_id' => 'nullable|exists:categories,id'
         ]);
 
         // Security check: account belongs to user
-        $account = Account::where('id', $request->account_id)
+        $account = Account::where('id', $request->account_id)//gets the account of the logged in user
                           ->where('user_id', Auth::id())
-                          ->firstOrFail();
+                          ->firstOrFail();//->firstOrFail is a method that returns the first record or fails if no record is found
 
         // Handle amount conversion based on type
         // If type is provided, use it; otherwise, infer from amount sign (backward compatibility)
@@ -51,7 +51,7 @@ class TransactionController extends Controller
         // Create transaction
         $transaction = Transaction::create([
             'account_id' => $account->id,
-            'category_id' => $request->category_id, // can be null
+            'category_id' => $request->category_id, // can be null or exists
             'description' => $request->description,
             'amount' => $amount,
             'date' => $request->date

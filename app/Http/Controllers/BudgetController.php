@@ -11,13 +11,13 @@ class BudgetController extends Controller
 {
     public function index()
     {
-        $userId = Auth::id();
+        $userId = Auth::id(); //get the id of the logged in user
 
         if (!$userId) {
             return response()->json(['error' => 'Unauthenticated'], 401);
         }
 
-        $budgets = Budget::where('user_id', $userId)->get();
+        $budgets = Budget::where('user_id', $userId)->get(); //get the budgets of the logged in user
 
         $response = [];
 

@@ -5,6 +5,11 @@
 @section('content')
 
 <style>
+    /* Alpine.js cloak - hide elements until Alpine initializes */
+    [x-cloak] {
+        display: none !important;
+    }
+
     .page-header {
         display: flex;
         align-items: center;
@@ -69,6 +74,32 @@
         margin-bottom: 16px;
     }
 
+    .account-actions {
+        display: flex;
+        gap: 8px;
+        align-items: center;
+    }
+
+    .btn-delete {
+        padding: 6px 12px;
+        background: rgba(239, 68, 68, 0.2);
+        color: #ef4444;
+        border: 1px solid rgba(239, 68, 68, 0.3);
+        border-radius: 6px;
+        cursor: pointer;
+        font-size: 12px;
+        font-weight: 600;
+        transition: all 0.2s;
+        display: inline-flex;
+        align-items: center;
+        gap: 4px;
+    }
+
+    .btn-delete:hover {
+        background: rgba(239, 68, 68, 0.3);
+        transform: translateY(-1px);
+    }
+
     .account-name {
         font-size: 18px;
         font-weight: 600;
@@ -95,6 +126,11 @@
     .form-card {
         max-width: 600px;
         margin-bottom: 32px;
+        display: none;
+    }
+
+    .form-card.show {
+        display: block;
     }
 
     .form-group {
@@ -122,6 +158,15 @@
         border-radius: 10px;
         margin-bottom: 24px;
         border-left: 4px solid #00CED1;
+    }
+
+    .alert-error {
+        padding: 12px 20px;
+        background: rgba(239, 68, 68, 0.15);
+        color: #ef4444;
+        border-radius: 10px;
+        margin-bottom: 24px;
+        border-left: 4px solid #ef4444;
     }
 
     .no-data {
@@ -208,10 +253,10 @@
 
 <div class="page-header">
     <h2>My Accounts</h2>
-    <a href="#add-account" class="btn-primary" onclick="document.getElementById('add-account').scrollIntoView({behavior: 'smooth'});">
+    <button type="button" class="btn-primary" onclick="toggleAddAccountForm()">
         <i class="fas fa-plus"></i>
         Add Account
-    </a>
+    </button>
 </div>
 
 @if(session('success'))
@@ -220,15 +265,35 @@
     </div>
 @endif
 
+@if(session('error'))
+    <div class="alert-error">
+        <i class="fas fa-exclamation-circle"></i> {{ session('error') }}
+    </div>
+@endif
+
 @if($accounts->count() > 0)
     <div class="accounts-grid">
         @foreach($accounts as $account)
             <div class="account-card">
                 <div class="account-header">
-                    <div class="account-name">{{ $account->name }}</div>
-                    <div class="account-type">{{ $account->type }}</div>
+                    <div>
+                        <div class="account-name">{{ $account->name }}</div>
+                        <div class="account-type">{{ $account->type }}</div>
+                    </div>
+                    <div class="account-actions">
+                        <form method="POST" action="/accounts/{{ $account->id }}" style="display: inline;" onsubmit="return confirm('Are you sure you want to delete this account? This action cannot be undone.');">
+                            @csrf
+                            @method('DELETE')
+                            <button type="submit" class="btn-delete" title="Delete Account">
+                                <i class="fas fa-trash"></i>
+                            </button>
+                        </form>
+                    </div>
                 </div>
-                <div class="account-balance">₹{{ number_format($account->balance, 2) }}</div>
+                <div class="account-balance">
+                    <span x-show="!balanceHidden">₹{{ number_format($account->balance, 2) }}</span>
+                    <span x-show="balanceHidden" x-cloak>••••••</span>
+                </div>
             </div>
         @endforeach
     </div>
@@ -240,7 +305,7 @@
     </div>
 @endif
 
-<div id="add-account" class="card form-card">
+<div id="add-account" class="card form-card {{ $errors->any() ? 'show' : '' }}">
     <h2 style="font-size: 24px; font-weight: 700; color: #ffffff; margin-bottom: 24px;">Add New Account</h2>
 
     <form method="POST" action="/accounts">
@@ -282,11 +347,26 @@
             <button type="submit" class="btn">
                 <i class="fas fa-save"></i> Add Account
             </button>
-            <a href="/accounts" class="btn secondary" style="text-decoration: none; display: inline-flex; align-items: center; justify-content: center;">
+            <button type="button" class="btn secondary" onclick="toggleAddAccountForm()">
                 Cancel
-            </a>
+            </button>
         </div>
     </form>
 </div>
+
+<script>
+    function toggleAddAccountForm() {
+        const formCard = document.getElementById('add-account');
+        formCard.classList.toggle('show');
+        
+        if (formCard.classList.contains('show')) {
+            formCard.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+            // Focus on the first input field
+            setTimeout(() => {
+                document.getElementById('name').focus();
+            }, 300);
+        }
+    }
+</script>
 
 @endsection

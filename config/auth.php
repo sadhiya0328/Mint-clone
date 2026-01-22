@@ -41,7 +41,7 @@ return [
             'provider' => 'users',
         ],
         'api' => [
-            'driver' => 'jwt',
+            'driver' => 'jwt', //jwt is the driver is used to authenticate the user
             'provider' => 'users',
         ],
     ],

@@ -26,6 +26,7 @@ Route::get('/dashboard', [DashboardController::class, 'index']);
 Route::get('/dashboard/search', [DashboardController::class, 'search'])->middleware('auth');
 Route::get('/accounts', [AccountController::class, 'index'])->middleware('auth');
 Route::post('/accounts', [AccountController::class, 'store'])->middleware('auth');
+Route::delete('/accounts/{account}', [AccountController::class, 'destroy'])->middleware('auth');
 
 // Transactions routes
 Route::get('/transactions', [TransactionController::class, 'index'])->middleware('auth');

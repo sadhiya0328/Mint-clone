@@ -13,8 +13,8 @@ return new class extends Migration
     {
         Schema::create('transactions', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('account_id')->constrained()->cascadeOnDelete();
-            $table->foreignId('category_id')->nullable()->constrained()->nullOnDelete();
+            $table->foreignId('account_id')->constrained()->cascadeOnDelete(); //if account is deleted, all transactions related to that account will be deleted
+            $table->foreignId('category_id')->nullable()->constrained()->nullOnDelete();//if category is deleted , category is null.
             $table->string('description');
             $table->decimal('amount', 10, 2);
             $table->date('date');

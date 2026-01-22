@@ -5,6 +5,11 @@
 @section('content')
 
 <style>
+    /* Alpine.js cloak - hide elements until Alpine initializes */
+    [x-cloak] {
+        display: none !important;
+    }
+
     /* Stats Grid */
     .stats-grid {
         display: grid;
@@ -569,7 +574,10 @@
                 <i class="fas fa-wallet"></i>
             </div>
         </div>
-        <p class="stat-card-value">₹{{ number_format($balance, 2) }}</p>
+        <p class="stat-card-value">
+            <span x-show="!balanceHidden">₹{{ number_format($balance, 2) }}</span>
+            <span x-show="balanceHidden" x-cloak>••••••</span>
+        </p>
     </div>
 
     <div class="stat-card">
@@ -579,7 +587,10 @@
                 <i class="fas fa-arrow-down"></i>
             </div>
         </div>
-        <p class="stat-card-value expense">₹{{ number_format($expense, 2) }}</p>
+        <p class="stat-card-value expense">
+            <span x-show="!balanceHidden">₹{{ number_format($expense, 2) }}</span>
+            <span x-show="balanceHidden" x-cloak>••••••</span>
+        </p>
     </div>
 
     <div class="stat-card">
@@ -593,9 +604,15 @@
             $remaining = $balance - $expense;
         @endphp
         @if($remaining < 0)
-            <p class="stat-card-value remaining negative">₹{{ number_format($remaining, 2) }}</p>
+            <p class="stat-card-value remaining negative">
+                <span x-show="!balanceHidden">₹{{ number_format($remaining, 2) }}</span>
+                <span x-show="balanceHidden" x-cloak>••••••</span>
+            </p>
         @else
-            <p class="stat-card-value remaining">₹{{ number_format($remaining, 2) }}</p>
+            <p class="stat-card-value remaining">
+                <span x-show="!balanceHidden">₹{{ number_format($remaining, 2) }}</span>
+                <span x-show="balanceHidden" x-cloak>••••••</span>
+            </p>
         @endif
     </div>
 </div>
@@ -641,9 +658,15 @@
                         </div>
                     </div>
                     @if($isOverdue)
-                        <div class="bill-amount overdue">₹{{ number_format($bill->amount, 2) }}</div>
+                        <div class="bill-amount overdue">
+                            <span x-show="!balanceHidden">₹{{ number_format($bill->amount, 2) }}</span>
+                            <span x-show="balanceHidden" x-cloak>••••••</span>
+                        </div>
                     @else
-                        <div class="bill-amount">₹{{ number_format($bill->amount, 2) }}</div>
+                        <div class="bill-amount">
+                            <span x-show="!balanceHidden">₹{{ number_format($bill->amount, 2) }}</span>
+                            <span x-show="balanceHidden" x-cloak>••••••</span>
+                        </div>
                     @endif
                 </div>
             @endforeach
@@ -693,11 +716,13 @@
                     </div>
                     @if($isPositive)
                         <div class="transaction-amount positive">
-                            +₹{{ number_format($transaction->amount, 2) }}
+                            <span x-show="!balanceHidden">+₹{{ number_format($transaction->amount, 2) }}</span>
+                            <span x-show="balanceHidden" x-cloak>••••••</span>
                         </div>
                     @else
                         <div class="transaction-amount negative">
-                            -₹{{ number_format(abs($transaction->amount), 2) }}
+                            <span x-show="!balanceHidden">-₹{{ number_format(abs($transaction->amount), 2) }}</span>
+                            <span x-show="balanceHidden" x-cloak>••••••</span>
                         </div>
                     @endif
                 </div>
@@ -776,7 +801,8 @@
                     <div class="goal-header-small">
                         <span class="goal-name-small">{{ $goal->name }}</span>
                         <span class="goal-amounts-small">
-                            ₹{{ number_format($goal->current_amount, 0) }} / ₹{{ number_format($goal->target_amount, 0) }}
+                            <span x-show="!balanceHidden">₹{{ number_format($goal->current_amount, 0) }} / ₹{{ number_format($goal->target_amount, 0) }}</span>
+                            <span x-show="balanceHidden" x-cloak>•••••• / ••••••</span>
                         </span>
                     </div>
                     <div class="progress-bar-small">

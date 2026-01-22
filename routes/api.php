@@ -13,9 +13,9 @@ Route::post('/login', [AuthController::class, 'login']);
 
 // Protected routes , acceced by authenticated users jwt based token
 Route::middleware('auth:api')->group(function () {
-    Route::apiResource('accounts', AccountController::class);
+    Route::apiResource('accounts', AccountController::class);  
     //apiResource single line It generates CRUD routes (Create, Read, Update, Delete)
-    Route::get('/me', [AuthController::class, 'me']);
+    Route::get('/me', [AuthController::class, 'me']); //me is a method that returns the authenticated user
     Route::post('/logout', [AuthController::class, 'logout']);
     Route::get('/transactions', [TransactionController::class, 'index']);
     Route::post('/transactions', [TransactionController::class, 'store']);

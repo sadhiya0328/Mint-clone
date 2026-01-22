@@ -14,6 +14,9 @@
     <!-- Font Awesome -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 
+    <!-- Alpine.js -->
+    <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
+
     <style>
         * {
             margin: 0;
@@ -322,6 +325,12 @@
             border-color: #00CED1;
             box-shadow: 0 0 0 3px rgba(0, 206, 209, 0.2);
             background: rgba(255, 255, 255, 0.08);
+        }
+
+        /* Make dropdown options visible with black text on white background */
+        select option {
+            background: #ffffff;
+            color: #000000;
         }
 
         input::placeholder {
@@ -743,7 +752,9 @@
 <body>
 
 @auth
-<div class="app-wrapper">
+<div class="app-wrapper" x-data="{ 
+    balanceHidden: localStorage.getItem('balanceHidden') === 'true' 
+}" x-init="$watch('balanceHidden', val => localStorage.setItem('balanceHidden', val))">
     <!-- Sidebar Overlay -->
     <div class="sidebar-overlay" id="sidebarOverlay"></div>
     
@@ -797,6 +808,9 @@
                 </div>
             </div>
             <div class="header-right">
+                <div class="header-icon" @click="balanceHidden = !balanceHidden" title="Toggle balance visibility">
+                    <i class="fas" :class="balanceHidden ? 'fa-eye-slash' : 'fa-eye'"></i>
+                </div>
                 <div class="header-icon" id="searchBtn">
                     <i class="fas fa-search"></i>
                 </div>

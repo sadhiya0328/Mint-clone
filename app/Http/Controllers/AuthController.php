@@ -21,9 +21,9 @@ class AuthController extends Controller
 
         // Create user
         User::create([
-            'name'     => $request->name,
-            'email'    => $request->email,
-            'password' => Hash::make($request->password),
+            'name'     => $request->name,  
+            'email'    => $request->email, 
+            'password' => Hash::make($request->password), 
         ]);
 
         // Response
@@ -37,29 +37,29 @@ class AuthController extends Controller
     {
         $credentials = $request->only('email', 'password');
 
-        if (! $token = Auth::guard('api')->attempt($credentials)) {
-            return response()->json([
-                'error' => 'Invalid credentials'
+        if (! $token = Auth::guard('api')->attempt($credentials)) {  //attempt is a method that checks if the credentials are valid
+            return response()->json([ //response is a method that returns a JSON response
+                'error' => 'Invalid credentials' 
             ], 401);
         }
 
         return response()->json([
-            'token' => $token
+            'token' => $token  //token is a string that is used to authenticate the user
         ]);
     }
 
     // AUTHENTICATED USER
     public function me()
-    {
+    { //me is a method that returns the authenticated user
         return response()->json(
-            Auth::guard('api')->user()
+            Auth::guard('api')->user() 
         );
     }
 
     // LOGOUT
     public function logout()
     {
-        Auth::guard('api')->logout();
+        Auth::guard('api')->logout(); //logout is a method that logs out the user
 
         return response()->json([
             'message' => 'Logged out successfully'

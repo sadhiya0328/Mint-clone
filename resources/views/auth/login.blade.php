@@ -144,6 +144,18 @@
         border-left-color: #dc3545;
     }
 
+    .alert-success {
+        padding: 12px 20px;
+        background: rgba(0, 206, 209, 0.15);
+        color: #00CED1;
+        border-radius: 10px;
+        margin-bottom: 24px;
+        border-left: 4px solid #00CED1;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+    }
+
     .error-text {
         font-size: 12px;
         color: #dc3545;
@@ -382,6 +394,12 @@
         <!-- Left Panel - Form -->
         <div class="form-panel">
             <h1 class="form-title">Login please</h1>
+
+            @if(session('success'))
+                <div class="alert-success">
+                    <i class="fas fa-check-circle"></i> {{ session('success') }}
+                </div>
+            @endif
 
             <form method="POST" action="/login">
                 @csrf

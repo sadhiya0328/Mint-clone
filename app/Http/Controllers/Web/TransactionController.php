@@ -19,14 +19,14 @@ class TransactionController extends Controller
         $userId = Auth::id();
         
         // Get transactions with account and category relationships
-        $transactions = Transaction::whereHas('account', function ($query) use ($userId) {
+        $transactions = Transaction::whereHas('account', function ($query) use ($userId) { //get the transactions of the logged in user
             $query->where('user_id', $userId);
         })
-        ->with(['account', 'category'])
-        ->latest('date')
-        ->paginate(20);
+        ->with(['account', 'category'])//get the account and category of the transaction
+        ->latest('date')//get the latest transactions
+        ->paginate(20);//show 20 transactions for page
 
-        return view('transactions', compact('transactions'));
+        return view('transactions', compact('transactions'));//return the transactions view with the transactions data
     }
 
     /**
@@ -35,7 +35,7 @@ class TransactionController extends Controller
     public function create()
     {
         $userId = Auth::id();
-        $accounts = Account::where('user_id', $userId)->get();
+        $accounts = Account::where('user_id', $userId)->get(); 
         $categories = Category::all();
         
         return view('transactions-create', compact('accounts', 'categories'));
