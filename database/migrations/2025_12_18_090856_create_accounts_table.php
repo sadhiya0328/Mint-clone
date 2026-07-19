@@ -14,7 +14,7 @@ return new class extends Migration
         //purpose:store bank/ credit accounts
         Schema::create('accounts', function (Blueprint $table) {
         $table->id();
-        $table->foreignId('user_id')->constrained()->cascadeOnDelete();
+        $table->foreignId('user_id')->constrained()->cascadeOnDelete(); //all records related to that user in this table are automatically deleted.if we dlt users table
         $table->string('plaid_item_id')->nullable();
         $table->string('name');
         $table->string('type'); // savings, checking, credit
